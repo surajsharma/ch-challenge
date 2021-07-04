@@ -1,27 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useTable, usePagination, useColumnOrder } from "react-table";
+import React from "react";
+import { useTable, usePagination } from "react-table";
 
 export default function PaginatedTable({ data, columns }) {
     // Use the state and functions returned from useTable to build your UI
 
-    columns[0].header = "Sub Population Name";
-    columns[1].header = "Net Impact";
-    columns[2].header = "Baseline Subpopulation Size";
-    columns[3].header = "RCA Subpopulation Size";
-    columns[6].header = "Baseline Metric";
-    columns[7].header = "RCA Metric";
-
-    const OrderedColumns = [
-        columns[0],
-        columns[6],
-        columns[7],
-        columns[2],
-        columns[3],
-        columns[1],
-        columns[4],
-        columns[5],
-    ];
-    console.log(OrderedColumns, "oc");
     const {
         getTableProps,
         getTableBodyProps,
@@ -41,7 +23,7 @@ export default function PaginatedTable({ data, columns }) {
         state: { pageIndex, pageSize },
     } = useTable(
         {
-            columns: OrderedColumns,
+            columns,
             data,
             initialState: {
                 pageIndex: 0,
@@ -53,7 +35,6 @@ export default function PaginatedTable({ data, columns }) {
                 ],
             },
         },
-
         usePagination
     );
     return (
@@ -123,7 +104,7 @@ export default function PaginatedTable({ data, columns }) {
                                         borderBottom: "solid 3px red",
                                         background: "aliceblue",
                                         color: "black",
-                                        fontSize: "11px",
+                                        fontSize: "13px",
                                     }}
                                 >
                                     {<p>{column.header}</p>}
@@ -151,7 +132,8 @@ export default function PaginatedTable({ data, columns }) {
                                                             : "#27AE60"
                                                         : "black",
                                                 borderBottom: "1px solid black",
-                                                fontSize: "11px",
+                                                fontSize: "13px",
+                                                fontWeight: "bolder",
                                             }}
                                         >
                                             {cell.render("Cell")}

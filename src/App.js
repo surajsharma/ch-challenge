@@ -18,14 +18,19 @@ export default function App() {
     let [identifiers, setIdentifiers] = useState([]);
     const [tabIndex, setTabIndex] = useState(0);
 
+    let bankURL =
+        process.env.NODE_ENV !== "production"
+            ? "http://localhost:1234/bank"
+            : "https://mocki.io/v1/c99c382d-9952-4452-a860-02f0e7f01449";
+    let ecomURL =
+        process.env.NODE_ENV !== "production"
+            ? "http://localhost:1234/ecom"
+            : "https://mocki.io/v1/f8e89695-6f41-4e1c-b5e4-bfd9d7ddffa4";
+
     useEffect(() => {
         console.clear();
         axios
-            .get(
-                api === "banking"
-                    ? "http://localhost:1234/bank"
-                    : "http://localhost:1234/ecom"
-            )
+            .get(api === "banking" ? bankURL : ecomURL)
             .then((data) => {
                 console.log(data.data);
                 if (data.data) {
@@ -42,11 +47,7 @@ export default function App() {
         setTabIndex(0);
         console.clear();
         axios
-            .get(
-                api === "banking"
-                    ? "http://localhost:1234/bank"
-                    : "http://localhost:1234/ecom"
-            )
+            .get(api === "banking" ? bankURL : ecomURL)
             .then((data) => {
                 console.log(data.data);
                 if (data.data) {
@@ -62,11 +63,7 @@ export default function App() {
     useEffect(() => {
         if (tabIndex == 0) {
             axios
-                .get(
-                    api === "banking"
-                        ? "http://localhost:1234/bank"
-                        : "http://localhost:1234/ecom"
-                )
+                .get(api === "banking" ? bankURL : ecomURL)
                 .then((data) => {
                     console.log(data.data);
                     if (data.data) {
@@ -83,11 +80,7 @@ export default function App() {
             if (!apiData.length) {
                 console.log("fetching data again");
                 axios
-                    .get(
-                        api === "banking"
-                            ? "http://localhost:1234/bank"
-                            : "http://localhost:1234/ecom"
-                    )
+                    .get(api === "banking" ? bankURL : ecomURL)
                     .then((data) => {
                         if (data.data) {
                             const filtertedData = data.data.filter((data) =>
@@ -120,7 +113,25 @@ export default function App() {
                 c.push({ header: x, accessor: x });
             });
 
-            setColumns(c);
+            c[0].header = "Sub Population Name";
+            c[1].header = "Net Impact";
+            c[2].header = "Baseline Subpopulation Size";
+            c[3].header = "RCA Subpopulation Size";
+            c[6].header = "Baseline Metric";
+            c[7].header = "RCA Metric";
+
+            const OrderedColumns = [
+                c[0],
+                c[6],
+                c[7],
+                c[2],
+                c[3],
+                c[1],
+                c[4],
+                c[5],
+            ];
+
+            setColumns(OrderedColumns);
 
             var topImpact = apiData
                 .map(function (item) {
