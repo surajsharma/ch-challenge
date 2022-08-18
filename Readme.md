@@ -1,4 +1,4 @@
-### Chaos Genius Assignment
+### React Table With Charts
 
 
 ## Netlify Deployment
